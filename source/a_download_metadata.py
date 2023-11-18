@@ -5,6 +5,10 @@ cod_country = "CM"
 
 url = f"https://search.worldbank.org/api/v2/wds?format=json&fct=docty_exact,count_exact,lang_exact,disclstat_exact&rows=0&apilang=en&docty_key=540656&order=desc&os=0&srt=docdt&countrycode_exact={cod_country}"
 
+"""
+@author: tjhon
+"""
+
 
 def get_value(data, key):
     try:
@@ -47,7 +51,21 @@ keys_in_json = [
 TOTAL = 10508
 
 
+"""
+@author: tjhon
+"""
+
+
 def json_range(from_, to_):
+    """
+    The function `json_range` retrieves data from the World Bank API within a specified range, saves it
+    as both a JSON file and a CSV file, and returns a pandas DataFrame.
+
+    :param from_: The starting index of the range for the API request
+    :param to_: The `to_` parameter represents the end value of the range. It is used to determine the
+    number of rows to retrieve from the API
+    :return: The function `json_range` returns a pandas DataFrame object.
+    """
     rows = to_ - from_
     file_name = f"wb_{from_}_to_{to_}"
     dir_json = f"data/api/json/{file_name}"
@@ -71,6 +89,7 @@ def json_range(from_, to_):
     return df
 
 
+# The code is retrieving data from the World Bank API in batches of 500 rows at a time.
 by = 500
 begin = np.arange(0, TOTAL, by)
 final = begin + by
@@ -78,6 +97,8 @@ final[-1] = TOTAL
 
 all_data = pd.DataFrame()
 
+# The code snippet is iterating over pairs of values `b` and `f` using the `zip` function. These pairs
+# represent the starting and ending indices of the range for retrieving data from the World Bank API.
 for b, f in tqdm.tqdm(zip(begin, final)):
     df = json_range(b, f)
     all_data = pd.concat([all_data, df])
