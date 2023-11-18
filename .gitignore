@@ -1,2 +1,4 @@
 notes/
+data/api/csv/*
+data/api/json/*
 *pycache*
