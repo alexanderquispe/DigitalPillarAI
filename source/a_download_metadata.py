@@ -1,9 +1,8 @@
-import requests, json, os, tqdm
-import pandas as pd, numpy as np
+import requests, json, os, tqdm, pycountry
+import pandas as pd, numpy as np, warnings
 
-cod_country = "CM"
+warnings.filterwarnings("ignore")
 
-url = f"https://search.worldbank.org/api/v2/wds?format=json&fct=docty_exact,count_exact,lang_exact,disclstat_exact&rows=0&apilang=en&docty_key=540656&order=desc&os=0&srt=docdt&countrycode_exact={cod_country}"
 
 """
 @author: tjhon
@@ -56,23 +55,31 @@ TOTAL = 10508
 """
 
 
-def json_range(from_, to_):
+def data_country(cod_country):
     """
-    The function `json_range` retrieves data from the World Bank API within a specified range, saves it
-    as both a JSON file and a CSV file, and returns a pandas DataFrame.
+    The function `data_country` retrieves data from the World Bank API for a specific country and saves
+    it in both JSON and CSV formats.
 
-    :param from_: The starting index of the range for the API request
-    :param to_: The `to_` parameter represents the end value of the range. It is used to determine the
-    number of rows to retrieve from the API
-    :return: The function `json_range` returns a pandas DataFrame object.
+    :param cod_country: The parameter "cod_country" is a string that represents the country code. It is
+    used to filter the data from the World Bank API based on the specified country
+    :return: The function `data_country` returns a pandas DataFrame containing data related to a
+    specific country. If there are no documents available for the given country, an empty DataFrame is
+    returned.
     """
-    rows = to_ - from_
-    file_name = f"wb_{from_}_to_{to_}"
-    dir_json = f"data/api/json/{file_name}"
-    dir_csv = f"data/api/csv/{file_name}"
-    to_request = f"https://search.worldbank.org/api/v2/wds?format=json&docty_key=620265&rows={rows}&os={from_}"
+    main_url = f"https://search.worldbank.org/api/v2/wds?format=json&fct=docty_exact,count_exact,lang_exact,disclstat_exact&rows=0&apilang=en&docty_key=540656&order=desc&os=0&srt=docdt&countrycode_exact={cod_country}"
+
+    response = requests.get(main_url)
+    total_docs = response.json()["total"]
+    if total_docs < 1:
+        return pd.DataFrame()
+
+    dir_json = f"data/api/json/{cod_country}"
+    dir_csv = f"data/api/csv/{cod_country}"
+    to_request = f"https://search.worldbank.org/api/v2/wds?format=json&fct=docty_exact,count_exact,lang_exact,disclstat_exact&rows={total_docs}&apilang=en&docty_key=540656&order=desc&os=0&srt=docdt&countrycode_exact={cod_country}"
+
     docs = requests.get(to_request).json()["documents"]
-    json_file = dir_json + ".json"
+
+    json_file = dir_json + "_country.json"
     if os.path.exists(json_file):
         df = pd.read_json(json_file)
         return df
@@ -84,22 +91,23 @@ def json_range(from_, to_):
             for key in keys_in_json:
                 data[key].append(get_value(w, key))
     df = pd.DataFrame(data).reset_index()
-    df.to_csv(dir_csv + ".csv", index=False)
+    df["cod_country"] = cod_country
+    df.to_csv(dir_csv + "_country.csv", index=False)
     df.to_json(json_file)
     return df
 
 
-# The code is retrieving data from the World Bank API in batches of 500 rows at a time.
-by = 500
-begin = np.arange(0, TOTAL, by)
-final = begin + by
-final[-1] = TOTAL
+# The code is retrieving data from the World Bank API for each country and saving it in a CSV file.
+
+countries = list(pycountry.countries)
+countries = [x.alpha_2 for x in countries]
 
 all_data = pd.DataFrame()
+for country in countries:
+    try:
+        info = data_country(country)
+        all_data = pd.concat([all_data, info])
+    except:
+        pass
 
-# The code snippet is iterating over pairs of values `b` and `f` using the `zip` function. These pairs
-# represent the starting and ending indices of the range for retrieving data from the World Bank API.
-for b, f in tqdm.tqdm(zip(begin, final)):
-    df = json_range(b, f)
-    all_data = pd.concat([all_data, df])
-all_data.to_csv("data/csv/00_final_data.csv")
+all_data.to_csv("data/csv/00_all_country_data.csv", index=False)
