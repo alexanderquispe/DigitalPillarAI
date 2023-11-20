@@ -11,7 +11,8 @@ from tqdm import tqdm
 from langchain.vectorstores import FAISS
 from PyPDF2 import PdfReader
 
-openai_key = "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"
+from z_secrets import openai_key
+
 openai.api_key = openai_key
 os.environ["OPENAI_API_KEY"] = openai_key
 
