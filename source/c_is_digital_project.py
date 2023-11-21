@@ -17,7 +17,7 @@ openai.api_key = openai_key
 os.environ["OPENAI_API_KEY"] = openai_key
 
 
-# def is_digital_project(pdf_path):
+data = pd.read_csv("data/csv/01_merged_data_with_powerbi.csv")
 
 test_url = "https://documents1.worldbank.org/curated/en/746421608001638858/text/Bosnia-and-Herzegovina-Firm-Recovery-and-Support-Project.txt"
 
@@ -92,3 +92,7 @@ def add_dp(data, txt_url_column="txturl"):
     data["is_digital_project"] = results.apply(lambda x: x[0])
     data["is_digital_response"] = results.apply(lambda x: x[1])
     return data
+
+
+a = add_dp(data.sample(2))
+print(a)
