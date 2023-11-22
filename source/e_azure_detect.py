@@ -35,4 +35,4 @@ class AzureDocument:
         if save:
             with open(name, "wb") as f:
                 pickle.dump(result, f)
-        return name
+        return result, name

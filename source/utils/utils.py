@@ -40,6 +40,12 @@ def clean_lines(text):
 roman_dict = {"I": "II", "II": "III", "III": "IV"}
 
 
+def only_valid_caracter(text):
+    matches = re.findall(r"\w+", text)
+    matches = [x.lower() for x in matches]
+    return " ".join(matches)
+
+
 def find_components(str_description):
     match_components = re.search(
         r"([A-Z])\.\s*(Description of )?(Project|Phase [I1-9]?) Components",
@@ -106,7 +112,14 @@ def extract_project_info_from_url(url):
     return elements
 
 
-a = "https://documents1.worldbank.org/curated/en/746421608001638858/text/Bosnia-and-Herzegovina-Firm-Recovery-and-Support-Project.txt"
+def count_tokens(text):
+    if isinstance(text, str):
+        tokens = re.findall(r"\w+|[.,!?;]", text)
+        return len(tokens)
+    return 0
 
-b = extract_project_info_from_url(a)
-print(b)
+
+# a = "https://documents1.worldbank.org/curated/en/746421608001638858/text/Bosnia-and-Herzegovina-Firm-Recovery-and-Support-Project.txt"
+
+# b = extract_project_info_from_url(a)
+# print(b)

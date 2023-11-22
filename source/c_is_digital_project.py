@@ -11,7 +11,7 @@ from tqdm import tqdm
 from langchain.vectorstores import FAISS
 from PyPDF2 import PdfReader
 
-from z_secrets import openai_key
+from .z_secrets import openai_key
 
 openai.api_key = openai_key
 os.environ["OPENAI_API_KEY"] = openai_key
@@ -63,7 +63,7 @@ def is_digital_project(url_txt):
     try:
         response_text = chain.run(input_documents=docs, question=query)
         answer, why = response_text.split("; ")
-        is_digital = 1 if "yes" == answer.lower() else 0
+        is_digital = 1 if "yes" in answer.lower() else 0
         return is_digital, response_text
     except:
         text = [doc.page_content for doc in docs]
@@ -94,5 +94,4 @@ def add_dp(data, txt_url_column="txturl"):
     return data
 
 
-a = add_dp(data.sample(2))
-print(a)
+# a = add_dp(data.sample(2, random_state=1))

@@ -463,3 +463,85 @@ topic_names = [
 
 for name, list in zip(topic_names, topic_lists):
     topic[name] = list
+
+delimiter = "####"
+system_message = f"""
+You will be provided with a project description. \
+The project description query will be delimited with \
+{delimiter} characters.
+Classify each query into Digital Infrastructure Category, \
+Digital Public Platforms Category, Digital Financial Services Category \
+Digital Businesses Category, Digital Skills Category, Digital Safeguards.\
+
+To determine the classification, use ONLY the keywords provided for each category below. \
+Do NOT make assumptions, inferences, or interpretations outside of these keywords. \
+The project description should only be classified into a category if it explicitly \
+mentions the keywords provided. \
+Do not classify based on broader interpretations.
+For instance road infraestructure is not related to broadband infraestructure altought \
+both have the infraestructure word. Therefore, road infraestructure should not be in the \
+Digital Infrastructure Category
+
+Focus only using the keywords inside the categories, do not focus in the categories title. 
+
+For each classification, indicate 'yes' or 'no' and provide a brief \
+explanation for your choice based on the keywords.
+If project description does not mention any keywords for a specific category \
+then your answer should be 'no'
+
+Also, for each category where the answer is 'yes', provide a semantic score \
+ranging from 0 to 1. This score will indicate the strength of the match between \
+the keywords found in the project description and the category. A score of 1 \
+indicates a perfect match (the project description discusses multiple keywords \
+in the context relevant to the category), while a score of 0 indicates no \
+match at all. For instance, if the project description mentions 'broadband infrastructure' \
+and 'network connectivity', and both these keywords are relevant for the Digital \
+Infrastructure Category, then the score should be closer to 1. Conversely, if only a \
+single, less-relevant keyword is mentioned without much context, the score should be \
+lower but still greater than 0.
+
+Provide your output in JSON format with the keys: Digital Infrastructure Category, \
+Digital Public Platforms Category, Digital Financial Services Category, Digital Businesses \
+Category, Digital Skills Category, Digital Safeguards Category. Under each category key, provide \
+two sub-keys: 'classification' (with values 'yes' or 'no') and 'score' (with values ranging from 0 \
+to 1, only if classification is 'yes'). Also, include an 'explanation' key that provides reasoning \
+in paragraph format.
+For every classification, always provide your response in this exact structure:
+{{
+    "Digital Infrastructure Category": {{
+        "classification": "yes",
+        "score": 0.85,
+        "explanation": "The project description mentions both 'broadband infrastructure' \
+        and 'network connectivity' which are keywords for this category."
+    }},
+}}
+
+Please maintain a consistent format throughout all your replies.
+
+Digital Infrastructure Category:
+{infrastructure_str}
+
+Digital Public Platforms Category:
+{platforms_str}
+
+Digital Financial Services Category:
+{financial_services_str}
+
+Digital Businesses Category:
+{businesses_str}
+
+Digital Skills Category:
+{skills_str}
+
+Digital Safeguards Category:
+{safeguards_str}
+"""
+
+
+def user_message(text):
+    user_mess = f"{delimiter}{text}{delimiter}"
+    messages = [
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": user_mess},
+    ]
+    return messages
