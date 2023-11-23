@@ -1,7 +1,7 @@
 import numpy as np, re
 
 PD_1 = {
-    "description": [r"([a-z]{1,3}\s+)?project\s+description$"],
+    "description": [r"([a-z]{1,3}\s+)?(?:project|program)\s+description$"],
     "implementation": [
         r"([a-z]{1,3}\s+)?(?:project|program|institutional)?\s*implementation(\s*\w+){0,3}",
         r"key risks",
@@ -11,8 +11,8 @@ PD_1 = {
 PC_1 = {
     "components": [r"([a-z]{1,3}\s+)?(?:project|program|phase \d+)\s*components$"],
     "other": [
-        r"\s*(program|project|summary project)?\s+(financing|beneficiaries|cost and financing)$",
-        r"\s*(geographic targeting|lessons learned and reflected in the project design|theory of change|updated program results|results chain|total costs|project coordination)$",
+        r"([a-z]{1,3}\s+)?(program|project|summary project)?\s+(financing|beneficiaries|cost and financing)$",
+        r"([a-z]{1,3}\s+)?(geographic targeting|lessons learned and reflected in the project design|theory of change|updated program results|results chain|total costs|project coordination)$",
     ],
 }
 

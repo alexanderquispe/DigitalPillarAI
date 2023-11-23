@@ -1,6 +1,9 @@
 import requests, pandas as pd
 from .utils.utils import clean_lines, save_txt, only_valid_caracter
 from .regex.regex import regex_result, PD_1, PC_1, in_regex, _in_regex
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 def lines_to_df(source):
@@ -65,9 +68,11 @@ def proccess_loop(data, n, patter1=PD_1["description"], patter2=PD_1["implementa
     return filter_data
 
 
-def get_context(url, patter1=PD_1["description"], patter2=PD_1["implementation"]):
+def get_context(
+    url, patter1=PD_1["description"], patter2=PD_1["implementation"], n1=400
+):
     data = lines_to_df(url)
-    n = 200
+    n = n1
     result = None
     while True:
         try:
@@ -81,6 +86,17 @@ def get_context(url, patter1=PD_1["description"], patter2=PD_1["implementation"]
                 break
             n -= 10
     return result
+
+
+def get_components(description=None, url=None):
+    pc = None
+    if description is None and url is None:
+        return pc
+    if description is not None:
+        pc = get_context(description, PC_1["components"], patter2=PC_1["other"])
+    if url is not None:
+        pc = get_context(url, PC_1["components"], patter2=PC_1["other"])
+    return pc
 
 
 class ExtractProjects:
