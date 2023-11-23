@@ -2,3 +2,6 @@ notes/
 data/api/csv/*
 data/api/json/*
 *pycache*
+*vscode*
+source/z_secrets.py
+pass_keys.json
