@@ -9,6 +9,14 @@ pycountry = "*"
 numpy = "*"
 requests = "*"
 tqdm = "*"
+pdoc = "*"
+ipykernel = "*"
+pypdf2 = "*"
+openai = "*"
+langchain = "*"
+tiktoken = "*"
+faiss-cpu = "*"
+azure-ai-formrecognizer = "*"
 
 [dev-packages]
 
