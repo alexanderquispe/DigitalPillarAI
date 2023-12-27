@@ -56,3 +56,5 @@ http://127.0.0.1:8000/docs
 ![](figs/how-to-use-api_0.png)
 ![](figs/how-to-use-api.png)
 
+
+- Presentation: [slides](https://docs.google.com/presentation/d/17PhvpxWXvhu3LH18OQDrn2KbG9hIikGhQIG4a0dPpbM/edit?usp=sharing)
