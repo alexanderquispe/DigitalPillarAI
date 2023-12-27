@@ -10,3 +10,49 @@ For more information see the following [presentation](https://docs.google.com/pr
 ## Example
 
 - [First Version](https://github.com/alexanderquispe/DigitalPillarAI/blob/main/run_file.ipynb)
+
+
+
+# API
+
+## Requirements
+
+
+
+- Python = 3.11
+- C++ 17 compiler
+
+## Install Locally
+
+Install `pipenv`
+
+```sh
+pip install pipenv
+```
+
+```sh
+git clone https://github.com/alexanderquispe/DigitalPillarAI
+cd DigitalPillarAI
+pipenv shell
+pipenv install
+```
+
+## How to use
+
+
+```
+pipenv run uvicorn main:app --reload
+```
+
+Go to
+
+http://127.0.0.1:8000/project_id/{Pxxxxxxx}
+
+
+## FastAPI
+
+http://127.0.0.1:8000/docs
+
+![](figs/how-to-use-api_0.png)
+![](figs/how-to-use-api.png)
+
