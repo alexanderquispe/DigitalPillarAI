@@ -4,4 +4,5 @@ data/api/json/*
 *pycache*
 *vscode*
 source/z_secrets.py
+wbpillargpt/z_secrets.py
 pass_keys.json
