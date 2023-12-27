@@ -17,8 +17,10 @@ langchain = "*"
 tiktoken = "*"
 faiss-cpu = "*"
 azure-ai-formrecognizer = "*"
+fastapi = {extras = ["all"] }
+swig = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.11"

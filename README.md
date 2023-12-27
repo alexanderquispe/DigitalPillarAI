@@ -10,3 +10,22 @@ For more information see the following [presentation](https://docs.google.com/pr
 ## Example
 
 - [First Version](https://github.com/alexanderquispe/DigitalPillarAI/blob/main/run_file.ipynb)
+
+
+
+# API
+
+```
+main_url = http://127.0.0.1:8000/project_id/{Pxxxxxxx}
+```
+
+
+## FastAPI
+
+```
+http://127.0.0.1:8000/docs
+```
+
+![](figs/how-to-use-api_0.png)
+![](figs/how-to-use-api.png)
+
